@@ -37,7 +37,7 @@ void rollDice(int numRolls, int &maxOnes, int &totalRolls, chrono::time_point<ch
             {
                 lock_guard<mutex> guard(coutMutex);
                 // Move the cursor to the specific line for this thread
-                cout << "\033[" << (threadId + 1) << ";0H"; // Move cursor to line (threadId + 1)
+                cout << "\033[" << (threadId + 5) << ";0H"; // Move cursor to line (threadId + 1)
                 cout << "Thread " << threadId << " - Rolls: " << localRolls << ", Elapsed Time: " << elapsed_time.count() << " seconds";
             }
         }
@@ -52,6 +52,7 @@ int main() {
     auto start_time = chrono::high_resolution_clock::now();
 
     int numThreads = thread::hardware_concurrency() - 2;
+    cout << "\033[2J";
     cout << "Number of Threads: " << numThreads << endl;
 
     // Specify the total number of rolls you want to perform
@@ -65,7 +66,7 @@ int main() {
     vector<int> totalRolls(numThreads, 0);
 
     // Clear the screen and move the cursor to the top
-    cout << "\033[2J\033[H";
+    cout << "\033[H";
 
     for (int i = 0; i < numThreads; ++i) {
         futures.push_back(async(launch::async, rollDice, numRollsPerThread, ref(maxOnes[i]), ref(totalRolls[i]), start_time, i));
@@ -81,6 +82,8 @@ int main() {
     // End the timer
     auto end_time = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_time = end_time - start_time;
+    
+    cout << "\033[" << (numThreads + 8) << ";0H";
 
     cout << "\nHighest Ones Roll: " << finalMaxOnes << endl;
     cout << "Number of Roll Sessions: " << finalTotalRolls << endl;
