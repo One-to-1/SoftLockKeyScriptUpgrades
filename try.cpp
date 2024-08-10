@@ -56,7 +56,9 @@ int main() {
     cout << "Number of Threads: " << numThreads << endl;
 
     // Specify the total number of rolls you want to perform
-    int totalNumRolls = 1000000000; // Change this value to your desired number of rolls
+    cout << "Enter the total number of rolls: ";
+    int totalNumRolls; 
+    cin >> totalNumRolls;
 
     // Calculate the number of rolls per thread
     int numRollsPerThread = totalNumRolls / numThreads;
@@ -88,6 +90,13 @@ int main() {
     cout << "\nHighest Ones Roll: " << finalMaxOnes << endl;
     cout << "Number of Roll Sessions: " << finalTotalRolls << endl;
     cout << "Elapsed Time: " << elapsed_time.count() << " seconds" << endl;
+
+    // Prompt the user to press 0 to exit
+    int exitCode;
+    do {
+        cout << "Press 0 to exit: ";
+        cin >> exitCode;
+    } while (exitCode != 0);
 
     return 0;
 }
